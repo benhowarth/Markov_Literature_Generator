@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Markov Literature Generator</title>
+		<title>Markov Generator</title>
 		<script src="jquery-3.1.1.min.js"></script>
 		<script src="underscore-min.js"></script>
 		<script src="markovGen.js"></script>
@@ -11,11 +11,12 @@
 		<div id="inputDiv">
 			<p>Write me a 'sentence' of <input id="sentenceLength" type="text" value="30"></input>
 			 words, in the style of <select id="sentenceSource">
-			<option value="pride.txt">Pride And Prejudice</option>
-			<option value="huck.txt">Huckleberry Finn</option>
-			<option value="alice.txt">Alice's Adventures In Wonderland</option>
+			<option value="pride.txt">Pride and Prejudice</option>
+			<option value="huck.txt">Adventures of Huckleberry Finn</option>
+			<option value="alice.txt">Alice's Adventures in Wonderland</option>
 			<option value="treasure.txt">Treasure Island</option>
 			<option value="sonnets.txt">Shakespeare's Sonnets</option>
+			<option value="jane.txt">Jane Eyre</option>
 			</select><button id="submitSentence" onclick="fadeOutResults();writeSentence()">please</button></p>
 		</div>
 		<div id="resultsDiv">
@@ -64,6 +65,10 @@
 			else if(genSrc=="sonnets.txt"){
 				startString="THE SONNETS";
 				endString="End of Project Gutenberg's Shakespeare's Sonnets, by William Shakespeare";
+			}
+			else if(genSrc=="jane.txt"){
+				startString="CHAPTER I";
+				endString="***END OF THE PROJECT GUTENBERG EBOOK JANE EYRE***";
 			}
 			else{
 				startString="";
