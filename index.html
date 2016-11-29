@@ -1,0 +1,84 @@
+<html>
+	<head>
+		<title>Markov Generator</title>
+		<script src="jquery-3.1.1.min.js"></script>
+		<script src="underscore-min.js"></script>
+		<script src="markovGen.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+		<link href="main.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div id="inputDiv">
+			<p>Write me a 'sentence' of <input id="sentenceLength" type="text" value="30"></input>
+			 words, in the style of <select id="sentenceSource">
+			<option value="pride.txt">Pride And Prejudice</option>
+			<option value="huck.txt">Huckleberry Finn</option>
+			<option value="alice.txt">Alice's Adventures In Wonderland</option>
+			<option value="treasure.txt">Treasure Island</option>
+			<option value="sonnets.txt">Shakespeare's Sonnets</option>
+			</select><button id="submitSentence" onclick="fadeOutResults();writeSentence()">please</button></p>
+		</div>
+		<div id="resultsDiv">
+			<p id="sourceText"></p>
+			<p id="markovText"></p>
+		</div>
+		<script>
+			previousText="";
+			window.setInterval(function(){
+				if($("#markovText").text()!=previousText){
+					$("#submitSentence").text("please");
+					$("#submitSentence").prop('disabled', false);
+					previousText=$("#markovText").text();
+					$("#inputDiv").animate({marginTop:0},1000,function(){
+						$("#resultsDiv").animate({opacity:1},1000,function(){});
+					});
+				}
+			},500);
+			function fadeOutResults(){
+				if($("#resultsDiv").css("opacity")!="0"){$("#resultsDiv").animate({opacity:0},1000,function(){})};
+			}
+			function whileSentenceGen(){
+				sourceText=$("#sentenceSource :selected").text();
+				$("#submitSentence").text("LOADING...");
+				$("#submitSentence").prop('disabled', true);
+			}
+			function writeSentence(){
+			genLen=$("#sentenceLength").val();
+			genSrc=$("#sentenceSource").val();
+			if(genSrc=="pride.txt"){
+				startString="*** START OF THIS PROJECT GUTENBERG EBOOK PRIDE AND PREJUDICE ***";
+				endString="*** END OF THIS PROJECT GUTENBERG EBOOK PRIDE AND PREJUDICE ***";
+			}
+			else if(genSrc=="huck.txt"){
+				startString="*** START OF THIS PROJECT GUTENBERG EBOOK HUCKLEBERRY FINN ***";
+				endString="*** END OF THIS PROJECT GUTENBERG EBOOK HUCKLEBERRY FINN ***";
+			}
+			else if(genSrc=="alice.txt"){
+				startString="*** START OF THIS PROJECT GUTENBERG EBOOK ALICE’S ADVENTURES IN WONDERLAND ***";
+				endString="*** END OF THIS PROJECT GUTENBERG EBOOK ALICE’S ADVENTURES IN WONDERLAND ***";
+			}
+			else if(genSrc=="treasure.txt"){
+				startString="*** START OF THIS PROJECT GUTENBERG EBOOK TREASURE ISLAND ***";
+				endString="*** END OF THIS PROJECT GUTENBERG EBOOK TREASURE ISLAND ***";
+			}
+			else if(genSrc=="sonnets.txt"){
+				startString="THE SONNETS";
+				endString="End of Project Gutenberg's Shakespeare's Sonnets, by William Shakespeare";
+			}
+			else{
+				startString="";
+				endString="";
+			}
+			markovResult=markov({
+				url:genSrc,
+				startString:startString,
+				endString:endString,
+				length:parseInt(genLen),
+				functionToRun:whileSentenceGen
+			});
+			document.getElementById("sourceText").innerHTML="Source text taken from: "+sourceText;
+			document.getElementById("markovText").innerHTML=markovResult.result;
+			}
+		</script>
+	</body>
+</html>

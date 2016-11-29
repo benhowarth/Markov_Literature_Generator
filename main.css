@@ -1,0 +1,73 @@
+body{
+	background-color:black;
+	color:white;
+	text-align:center;
+	font-family: 'Bungee', cursive;
+	overflow-x:hidden;
+}
+#inputDiv{
+	margin-top:13%;
+}
+#resultsDiv{
+	opacity:0;
+}
+input[type=text]{
+	background-color:black;
+	color:white;
+	width:15%;
+	height:9%;
+	padding:5px;
+    box-sizing: border-box;
+	border:none;
+	text-align:center;
+	border-bottom:2px solid white;
+	font-family: 'Bungee', cursive;
+	font-size:1.5em;
+}
+input[type=text]:focus{
+	border:none;
+}
+select{	
+	background-color:black;
+	color:white;
+	height:8%;
+	padding:5px;
+    box-sizing: border-box;
+	border:none;
+	text-align:center;
+	border-bottom:2px solid white;
+	font-family: 'Bungee', cursive;
+	font-size:1em;
+}
+select option{
+	border:none;
+}
+button{
+	background-color:#111;
+	color:white;
+	box-sizing: border-box;
+	margin-left:1em;
+	padding-left:0.5em;
+	padding-right:0.5em;
+	border:none;
+	text-align:center;
+	font-family: 'Bungee', cursive;
+	font-size:1em;
+	margin-top:5%;
+}
+button:hover{
+	background-color:#222;
+}
+button:active{
+	background-color:black;
+}
+@media(min-width:800px){
+	input[type=text]{
+		width:10%;
+	}
+}
+@media(min-width:1000px){
+	input[type=text]{
+		width:7%;
+	}
+}

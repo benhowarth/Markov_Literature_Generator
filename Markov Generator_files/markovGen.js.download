@@ -1,0 +1,87 @@
+function markovFull(options,callback){
+	/*
+	Generates a markov string of word length 'length'
+	from the url 'url'
+	*/
+	_.defaults(options,{url:"pride.txt",length:30,startString:undefined,endString:undefined})
+	$.ajax({
+		async: false,
+		type: 'GET',
+		url: options.url,
+		success: callback
+	});
+	
+	
+}
+function markov(options){
+	markovFull(options,function(data) {
+			data=data.slice(data.indexOf(options.startString)+options.startString.length,data.indexOf(options.endString));
+			data=data.replace(/\r?\n|\r/g," ");
+			data=data.replace(/"/g, '\\"');
+			data=data.split(" ");
+			data=data.slice(0,1500);
+			counter=0;
+			while(counter<data.length){
+				if(data[counter]==""){
+					data.splice(counter,1);
+				}
+				else{
+					counter++;
+				}
+			}
+			words=data;
+			for(i=0;i<words.length;i++){words[i]=words[i].toLowerCase();}
+			
+			//START MAKING MARKOV String
+			
+			//First word
+			markovArray=[]
+			markovArray[0]=choose(words);
+			
+			//Loop for each word
+			for(i=1;i<options.length;i++){
+				markovArray[i]=markovChoose(words,markovArray[i-1]);
+			}
+			markovString=markovArray.join(" ");
+			markovObj={
+				sourceUrl:options.url,
+				result:markovString
+			}
+		});
+		
+		return markovObj
+}
+function choose(array){
+	return array[Math.floor(Math.random()*array.length)]
+}
+function markovChoose(array,element){
+	possibleOptions=[]
+	searchFrom=0
+	searchForOptions=true;
+	while(searchForOptions){
+		if(array.indexOf(element,searchFrom)!=-1){
+			possibleOptionsIndex=-1;
+			for(i=0;i<possibleOptions.length;i++){
+				/*if(possibleOptions[i].nextWord==array[array.indexOf(element,searchFrom)+1]){
+					possibleOptionsIndex=i;
+				}*/
+				//console.log(possibleOptions[i]);
+			}
+			if(possibleOptionsIndex==-1){
+				possibleOptions.push({index:array.indexOf(element,searchFrom),nextWord:array[array.indexOf(element,searchFrom)+1],freq:1});
+				searchFrom=array.indexOf(element,searchFrom)+1;
+			}
+			else{
+				possibleOptions[possibleOptionsIndex].freq++;
+			}
+		}
+		else{
+			searchForOptions=false;
+		}
+	}
+	console.log("___",element,"___");
+	console.log(possibleOptions);
+	console.log(words[possibleOptions[0].index],possibleOptions[0]);
+	chosenWord=possibleOptions[0];
+	return chosenWord.nextWord
+}
